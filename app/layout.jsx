@@ -10,7 +10,7 @@ export const metadata = {
 
 const navbar = (
   <Navbar
-    logo={<b>llmtest</b>}
+    logo={<span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><img src="/icon.svg" alt="" width={20} height={20} /><b>LLMTest</b></span>}
     projectLink="https://github.com/bahadiraraz/llmtest"
   />
 )
