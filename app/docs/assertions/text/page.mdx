@@ -1,0 +1,117 @@
+# Text Assertions
+
+All text assertions are deterministic — no LLM calls.
+
+## `contains(text, case_sensitive=True)`
+
+Checks that the output contains a substring.
+
+```python
+expect.contains("Paris")
+expect.contains("paris", case_sensitive=False)
+```
+
+## `not_contains(text)`
+
+Checks that the output does **not** contain a substring.
+
+```python
+expect.not_contains("London")
+```
+
+## `matches_regex(pattern)`
+
+Checks that the output matches a regular expression.
+
+```python
+expect.matches_regex(r"\d{4}")  # contains a 4-digit number
+```
+
+## `valid_json(schema=None)`
+
+Checks that the output is valid JSON. Optionally validates against a JSON schema.
+
+```python
+expect.valid_json()
+expect.valid_json(schema={
+    "type": "object",
+    "properties": {
+        "name": {"type": "string"},
+        "age": {"type": "integer"}
+    },
+    "required": ["name", "age"]
+})
+```
+
+## `length_between(min_words, max_words)`
+
+Checks that the output word count is within a range.
+
+```python
+expect.length_between(10, 100)
+```
+
+## `starts_with(prefix)`
+
+```python
+expect.starts_with("The")
+```
+
+## `ends_with(suffix)`
+
+```python
+expect.ends_with(".")
+```
+
+## `is_not_empty()`
+
+```python
+expect.is_not_empty()
+```
+
+## `one_of(options)`
+
+Checks that the output exactly matches one of the given options.
+
+```python
+expect.one_of(["yes", "no", "maybe"])
+```
+
+## `similar_to(reference, threshold=0.7)`
+
+Word overlap similarity (Jaccard). No LLM call.
+
+```python
+expect.similar_to("Paris is the capital of France", threshold=0.7)
+```
+
+## `contains_all(items)`
+
+Must contain **all** substrings.
+
+```python
+expect.contains_all(["Paris", "France", "capital"])
+```
+
+## `contains_any(items)`
+
+Must contain **at least one** substring.
+
+```python
+expect.contains_any(["Paris", "Lyon", "Marseille"])
+```
+
+## `structured_output(model)`
+
+Validates output as a Pydantic model.
+
+```python
+from pydantic import BaseModel
+
+class CityInfo(BaseModel):
+    name: str
+    country: str
+    population: int
+
+expect.structured_output(CityInfo)
+```

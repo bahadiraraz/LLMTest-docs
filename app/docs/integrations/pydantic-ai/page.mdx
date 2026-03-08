@@ -1,0 +1,99 @@
+# Pydantic AI
+
+Test your [Pydantic AI](https://ai.pydantic.dev) agents with llmtest assertions.
+
+```bash
+pip install llmtest[pydantic-ai]
+```
+
+## Basic usage
+
+```python
+from pydantic_ai import Agent
+from llmtest.integrations.pydantic_ai import PydanticAIAdapter
+from llmtest import expect
+
+agent = Agent('openai:gpt-5-mini', system_prompt='Be concise.')
+adapter = PydanticAIAdapter(agent)
+
+def test_my_agent():
+    output = adapter.run_sync("What is the capital of France?")
+
+    assert expect.contains("Paris").check(output).passed
+    assert expect.latency_under(5000).check(output).passed
+    assert expect.cost_under(0.01).check(output).passed
+```
+
+## Structured output
+
+```python
+from pydantic import BaseModel
+
+class CityInfo(BaseModel):
+    name: str
+    country: str
+
+agent = Agent('openai:gpt-5-mini', output_type=CityInfo)
+adapter = PydanticAIAdapter(agent)
+
+def test_structured():
+    output = adapter.run_sync("Tell me about Paris")
+    assert expect.structured_output(CityInfo).check(output).passed
+```
+
+## Tool calling
+
+```python
+agent = Agent('openai:gpt-5-mini')
+
+@agent.tool_plain
+def add(a: int, b: int) -> int:
+    return a + b
+
+adapter = PydanticAIAdapter(agent)
+
+def test_tools():
+    output = adapter.run_sync("What is 42 + 58?")
+    assert output.tool_calls
+    assert output.tool_calls[0]["name"] == "add"
+```
+
+## Dependencies
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class MyDeps:
+    api_key: str
+
+agent = Agent('openai:gpt-5-mini', deps_type=MyDeps)
+adapter = PydanticAIAdapter(agent)
+
+def test_with_deps():
+    output = adapter.run_sync("Fetch data", deps=MyDeps(api_key="test"))
+    assert output.content
+```
+
+## Retry
+
+```python
+def test_retry():
+    output = adapter.run_sync(
+        "Name a European capital",
+        retries=3,
+        retry_if=lambda out: "Paris" not in out.content,
+    )
+    assert "Paris" in output.content
+```
+
+## Async
+
+```python
+import pytest
+
+@pytest.mark.asyncio
+async def test_async():
+    output = await adapter.run("What is the capital of France?")
+    assert expect.contains("Paris").check(output).passed
+```

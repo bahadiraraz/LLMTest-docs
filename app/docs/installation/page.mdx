@@ -1,0 +1,63 @@
+# Installation
+
+Install llmtest with the provider you need:
+
+```bash
+pip install llmtest[openai]       # OpenAI (GPT-5.x, GPT-4.1, o3, o4-mini)
+pip install llmtest[anthropic]    # Anthropic (Claude Opus 4.6, Sonnet 4.6, Haiku 4.5)
+pip install llmtest[ollama]       # Local (Ollama — no API key)
+pip install llmtest[pydantic-ai]  # Pydantic AI agents
+pip install llmtest[all]          # Everything
+```
+
+## Package managers
+
+### uv
+
+```bash
+uv add llmtest[openai]
+```
+
+### PDM
+
+```bash
+pdm add llmtest[openai]
+```
+
+### Poetry
+
+```bash
+poetry add llmtest[openai]
+```
+
+### Rye
+
+```bash
+rye add llmtest --features openai
+```
+
+### Conda + pip
+
+```bash
+conda create -n llmtest python=3.12
+conda activate llmtest
+pip install llmtest[openai]
+```
+
+## Requirements
+
+- Python 3.10+
+- Pydantic 2.0+
+
+## API keys
+
+```bash
+# OpenAI
+export OPENAI_API_KEY=sk-...
+
+# Anthropic
+export ANTHROPIC_API_KEY=sk-ant-...
+
+# Ollama — no key needed, just run the server
+ollama serve
+```

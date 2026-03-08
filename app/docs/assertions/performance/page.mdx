@@ -1,0 +1,36 @@
+# Performance Assertions
+
+All are deterministic — no LLM calls.
+
+## `latency_under(ms)`
+
+```python
+expect.latency_under(2000)  # must respond within 2 seconds
+```
+
+## `cost_under(usd)`
+
+```python
+expect.cost_under(0.01)   # must cost less than 1 cent
+```
+
+## `token_count_under(max_tokens)`
+
+```python
+expect.token_count_under(500)  # max 500 total tokens
+```
+
+## Combining
+
+```python
+@llm_test(
+    expect.is_not_empty(),
+    expect.latency_under(2000),
+    expect.cost_under(0.01),
+    expect.token_count_under(500),
+    model="gpt-5-mini",
+)
+def test_fast_and_cheap(llm):
+    output = llm("What is 2+2?")
+    assert "4" in output.content
+```

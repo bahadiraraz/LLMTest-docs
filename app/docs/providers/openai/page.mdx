@@ -1,0 +1,65 @@
+# OpenAI
+
+```bash
+pip install llmtest[openai]
+export OPENAI_API_KEY=sk-...
+```
+
+## Usage
+
+```python
+@llm_test(
+    expect.is_not_empty(),
+    provider="openai",
+    model="gpt-5-mini",
+)
+def test_openai(llm):
+    output = llm("What is 2+2?")
+    assert "4" in output.content
+```
+
+## Supported models
+
+`gpt-5-mini`, `gpt-5`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `o3`, `o4-mini`, and custom fine-tuned models.
+
+## Structured output
+
+```python
+from pydantic import BaseModel
+
+class MathResult(BaseModel):
+    answer: int
+    explanation: str
+
+@llm_test(
+    expect.structured_output(MathResult),
+    provider="openai",
+    model="gpt-5-mini",
+)
+def test_structured(llm):
+    output = llm("What is 2+2? Respond as JSON.", response_format=MathResult)
+```
+
+## Tool calling
+
+```python
+@llm_test(
+    expect.tool_called("get_weather"),
+    provider="openai",
+    model="gpt-5-mini",
+)
+def test_tools(llm):
+    tools = [{
+        "type": "function",
+        "function": {
+            "name": "get_weather",
+            "description": "Get weather for a city",
+            "parameters": {
+                "type": "object",
+                "properties": {"city": {"type": "string"}},
+            },
+        },
+    }]
+    output = llm("Weather in Paris?", tools=tools)
+    assert output.tool_calls[0]["name"] == "get_weather"
+```

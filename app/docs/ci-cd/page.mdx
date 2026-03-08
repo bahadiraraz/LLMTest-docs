@@ -1,0 +1,64 @@
+# CI/CD
+
+## GitHub Actions
+
+```yaml
+name: LLM Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+      - run: pytest tests/ -v --ignore=tests/test_real_*
+
+  llm-tests:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev,openai,anthropic]"
+      - run: pytest -m llmtest --tb=short
+        env:
+          OPENAI_API_KEY: $\{{ secrets.OPENAI_API_KEY }}
+```
+
+## Markers
+
+```python
+import pytest
+
+@pytest.mark.llmtest
+def test_with_llm(llm):
+    output = llm("Hello", model="gpt-5-mini")
+    assert output.content
+```
+
+```bash
+pytest -m llmtest           # only LLM tests
+pytest -m "not llmtest"     # everything except LLM tests
+```
+
+## Cost control
+
+```python
+@llm_test(
+    expect.cost_under(0.01),
+    expect.latency_under(10000),
+    model="gpt-5-mini",
+)
+def test_ci_safe(llm):
+    output = llm("What is 2+2?")
+    assert "4" in output.content
+```

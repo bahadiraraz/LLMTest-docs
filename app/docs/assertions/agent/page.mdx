@@ -1,0 +1,55 @@
+# Agent Assertions
+
+Validate tool/function calling behavior.
+
+## `tool_called(name, times=None)`
+
+```python
+expect.tool_called("web_search")           # called at least once
+expect.tool_called("web_search", times=1)  # called exactly once
+```
+
+## `no_loop()`
+
+Detects infinite loops in tool call traces.
+
+```python
+expect.no_loop()
+```
+
+## `tool_order(expected_tools)`
+
+Checks tools were called in order.
+
+```python
+expect.tool_order(["search", "parse", "summarize"])
+```
+
+## Full example
+
+```python
+@llm_test(
+    expect.tool_called("web_search", times=1),
+    expect.tool_called("summarize", times=1),
+    expect.tool_order(["web_search", "summarize"]),
+    expect.no_loop(),
+    expect.cost_under(0.05),
+    model="gpt-5-mini",
+)
+def test_research_agent(llm):
+    tools = [
+        {
+            "type": "function",
+            "function": {
+                "name": "web_search",
+                "description": "Search the web",
+                "parameters": {
+                    "type": "object",
+                    "properties": {"query": {"type": "string"}},
+                },
+            },
+        },
+    ]
+    output = llm("Research Python 3.14", tools=tools)
+    assert output.tool_calls
+```

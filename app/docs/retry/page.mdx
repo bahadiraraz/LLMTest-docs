@@ -1,0 +1,43 @@
+# Retry
+
+LLMs are non-deterministic. llmtest has built-in retry at two levels.
+
+## Decorator-level retry
+
+Retry the **entire test** up to N times:
+
+```python
+@llm_test(
+    expect.contains("Paris"),
+    model="gpt-5-mini",
+    retries=3,
+    retry_delay=0.5,
+)
+def test_capital_with_retry(llm):
+    output = llm("What is the capital of France?")
+    assert "Paris" in output.content
+```
+
+## Fixture-level retry
+
+Retry **individual LLM calls** with a condition:
+
+```python
+def test_with_retry_condition(llm):
+    output = llm(
+        "Name a European capital",
+        model="gpt-5-mini",
+        retries=3,
+        retry_if=lambda out: "Paris" not in out.content,
+    )
+    assert output.content
+```
+
+`retry_if` returns `True` to retry, `False` to accept.
+
+## When to use which
+
+| Level | Use when |
+|---|---|
+| Decorator `retries` | The whole test is flaky |
+| Fixture `retry_if` | A specific LLM call needs a particular output |

@@ -1,0 +1,66 @@
+# Quick Start
+
+## 1. Install
+
+```bash
+pip install llmtest[openai]
+export OPENAI_API_KEY=sk-...
+```
+
+## 2. Write a test
+
+```python
+# test_my_llm.py
+from llmtest import expect, llm_test
+
+@llm_test(
+    expect.is_not_empty(),
+    expect.contains("hello", case_sensitive=False),
+    expect.latency_under(3000),
+    model="gpt-5-mini",
+    system_prompt="You are a friendly bot.",
+)
+def test_greeting(llm):
+    output = llm("Say hello")
+    assert output.content
+```
+
+## 3. Run
+
+```bash
+pytest test_my_llm.py -v
+```
+
+```
+test_my_llm.py::test_greeting PASSED    [  0.6s]
+
+────────── llmtest summary ──────────
+  LLM tests: 1 passed
+  Total cost: $0.000012
+  Avg latency: 612ms
+```
+
+## Using the fixture (no decorator)
+
+```python
+def test_with_fixture(llm):
+    output = llm("Say hello", model="gpt-5-mini")
+    assert "hello" in output.content.lower()
+    assert output.latency_ms < 5000
+    assert output.cost_estimate_usd < 0.01
+```
+
+## LLMOutput
+
+Every `llm()` call returns an `LLMOutput` object:
+
+| Field | Type | Description |
+|---|---|---|
+| `content` | `str` | The text response |
+| `model` | `str` | Model used |
+| `latency_ms` | `float` | Response time in milliseconds |
+| `input_tokens` | `int` | Prompt tokens |
+| `output_tokens` | `int` | Completion tokens |
+| `cost_estimate_usd` | `float` | Estimated cost |
+| `tool_calls` | `list[dict]` | Tool/function calls made |
+| `raw_response` | `Any` | The original provider response |

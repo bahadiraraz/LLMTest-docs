@@ -1,0 +1,53 @@
+# Composable Assertions
+
+Combine assertions with logical operators.
+
+## `all_of(*assertions)` — AND
+
+```python
+expect.all_of(
+    expect.contains("Paris"),
+    expect.not_contains("London"),
+    expect.latency_under(2000),
+)
+```
+
+## `any_of(*assertions)` — OR
+
+```python
+expect.any_of(
+    expect.contains("capital"),
+    expect.contains("city"),
+)
+```
+
+## `custom(fn)`
+
+```python
+expect.custom(lambda output: len(output.content.split()) < 50)
+```
+
+## Operators: `&` and `|`
+
+```python
+@llm_test(
+    expect.contains("Paris") & expect.not_contains("London"),
+    expect.contains("capital") | expect.contains("city"),
+)
+def test_composable(llm):
+    output = llm("What is the capital of France?", model="gpt-5-mini")
+    assert output.content
+```
+
+## Nesting
+
+```python
+expect.all_of(
+    expect.is_not_empty(),
+    expect.any_of(
+        expect.contains("Paris"),
+        expect.contains("paris"),
+    ),
+    expect.latency_under(3000),
+)
+```

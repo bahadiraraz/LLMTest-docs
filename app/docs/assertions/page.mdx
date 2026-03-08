@@ -1,0 +1,36 @@
+# Assertions
+
+llmtest provides 22+ built-in assertions in four categories:
+
+- **Text** — content validation (contains, regex, JSON, length, similarity)
+- **Performance** — latency, cost, token count
+- **Agent** — tool calls, loop detection, call ordering
+- **Composable** — combine assertions with AND, OR, custom logic
+
+All text and performance assertions are **deterministic** — zero LLM calls.
+
+## Usage
+
+### In `@llm_test` decorator
+
+```python
+from llmtest import expect, llm_test
+
+@llm_test(
+    expect.contains("Paris"),
+    expect.latency_under(2000),
+    model="gpt-5-mini",
+)
+def test_capital(llm):
+    output = llm("What is the capital of France?")
+    assert "Paris" in output.content
+```
+
+### Standalone
+
+```python
+from llmtest import expect
+
+result = expect.contains("Paris").check(output)
+assert result.passed
+```

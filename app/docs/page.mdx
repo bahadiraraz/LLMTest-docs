@@ -1,0 +1,31 @@
+# Getting Started
+
+llmtest is a pytest-based testing framework for LLM applications.
+It provides 22+ built-in assertions that are **deterministic and instant** — no paying an LLM to check if your output contains a word.
+
+## Key features
+
+- **Zero LLM calls for most assertions** — substring, regex, JSON, cost, latency checks are all local
+- **Built on Pydantic** — all models use `pydantic.BaseModel` for auto-validation and JSON serialization
+- **pytest native** — use `@llm_test` decorator or the `llm` fixture, run with `pytest`
+- **Multi-provider** — OpenAI, Anthropic, Ollama out of the box
+- **Agent testing** — tool call validation, loop detection, call ordering
+- **Retry support** — handle non-deterministic LLM outputs with built-in retries
+- **CI/CD ready** — JSON and JUnit reporters, GitHub Actions integration
+- **Pydantic AI integration** — test your Pydantic AI agents with llmtest assertions
+
+## Architecture
+
+```
+llmtest/
+  packages/
+    core/               # Pydantic models, assertions, runners (zero LLM dependency)
+    pytest-plugin/      # @llm_test decorator, fixtures, hooks
+    cli/                # CLI commands (llmtest run, init, providers)
+    providers/
+      openai/           # OpenAI provider
+      anthropic/        # Anthropic provider
+      ollama/           # Ollama provider (local, free)
+```
+
+The core package has **zero LLM dependencies**. Provider packages are installed separately so you only pull in what you need.

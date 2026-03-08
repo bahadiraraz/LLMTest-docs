@@ -1,0 +1,33 @@
+# Reporters
+
+## JSON Reporter
+
+```python
+from llmtest_core.reporters import JSONReporter
+
+reporter = JSONReporter()
+print(reporter.render(suite_result))
+```
+
+## JUnit Reporter
+
+For GitHub Actions, Jenkins:
+
+```python
+from llmtest_core.reporters import JUnitReporter
+
+reporter = JUnitReporter()
+with open("results.xml", "w") as f:
+    f.write(reporter.render(suite_result))
+```
+
+## pytest summary
+
+Automatic after test runs:
+
+```
+────────── llmtest summary ──────────
+  LLM tests: 5 passed, 1 failed
+  Total cost: $0.000234
+  Avg latency: 823ms
+```

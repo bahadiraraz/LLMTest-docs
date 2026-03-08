@@ -1,0 +1,43 @@
+# Ollama
+
+Run LLM tests locally — no API key, no cost.
+
+```bash
+pip install llmtest[ollama]
+ollama pull llama3.2
+ollama serve
+```
+
+## Usage
+
+```python
+@llm_test(
+    expect.is_not_empty(),
+    provider="ollama",
+    model="llama3.2",
+)
+def test_local(llm):
+    output = llm("What is 2+2?")
+    assert "4" in output.content
+```
+
+## Supported models
+
+Any model in your local Ollama: `llama3.2`, `mistral`, `codellama`, `phi3`, `gemma2`, `deepseek-r1`
+
+```bash
+ollama list  # see available models
+```
+
+## Custom host
+
+```bash
+export OLLAMA_HOST=http://my-server:11434
+```
+
+## When to use
+
+- **Local development** — no API costs, no rate limits
+- **CI/CD** — run tests without API keys
+- **Privacy** — data never leaves your machine
+- **Offline** — no internet needed

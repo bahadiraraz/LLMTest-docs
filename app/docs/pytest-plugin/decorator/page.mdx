@@ -1,0 +1,57 @@
+# @llm_test Decorator
+
+The primary way to write LLM tests.
+
+## Basic usage
+
+```python
+from llmtest import expect, llm_test
+
+@llm_test(
+    expect.contains("Paris"),
+    expect.latency_under(2000),
+    model="gpt-5-mini",
+)
+def test_capital(llm):
+    output = llm("What is the capital of France?")
+    assert "Paris" in output.content
+```
+
+## Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `*assertions` | `BaseAssertion` | — | Assertions to check after test |
+| `provider` | `str` | `"openai"` | LLM provider |
+| `model` | `str` | — | Model name |
+| `system_prompt` | `str` | `None` | System prompt |
+| `temperature` | `float` | `None` | Sampling temperature |
+| `max_tokens` | `int` | `None` | Max output tokens |
+| `tags` | `list[str]` | `None` | Test tags for filtering |
+| `retries` | `int` | `0` | Retry count on failure |
+| `retry_delay` | `float` | `1.0` | Seconds between retries |
+
+## How it works
+
+1. The decorator injects the `llm` callable into your test function
+2. Your test runs, making LLM calls via `llm()`
+3. After the test completes, all assertions are checked against the last `LLMOutput`
+4. If any assertion fails, the test fails with a detailed error message
+5. If `retries > 0` and the test fails, it retries up to N times
+
+## Per-call overrides
+
+```python
+@llm_test(
+    expect.is_not_empty(),
+    provider="anthropic",
+    model="claude-sonnet-4-6-20260218",
+)
+def test_with_override(llm):
+    output = llm(
+        "Explain gravity",
+        model="claude-haiku-4-5-20251001",
+        temperature=0.0,
+    )
+    assert output.content
+```

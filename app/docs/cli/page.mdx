@@ -1,0 +1,36 @@
+# CLI
+
+## Commands
+
+### `llmtest init`
+
+Create a starter test file:
+
+```bash
+llmtest init
+```
+
+### `llmtest run`
+
+Run LLM tests:
+
+```bash
+llmtest run tests/
+llmtest run tests/test_agent.py
+```
+
+### `llmtest providers`
+
+List available providers:
+
+```bash
+llmtest providers
+```
+
+```
+Provider      Status    Models
+──────────────────────────────────────
+openai        ✓ ready   gpt-5-mini, gpt-5, gpt-4.1
+anthropic     ✓ ready   claude-opus-4-6, claude-sonnet-4-6
+ollama        ✗ not running
+```

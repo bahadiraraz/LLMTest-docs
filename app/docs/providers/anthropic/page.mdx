@@ -1,0 +1,36 @@
+# Anthropic
+
+```bash
+pip install llmtest[anthropic]
+export ANTHROPIC_API_KEY=sk-ant-...
+```
+
+## Usage
+
+```python
+@llm_test(
+    expect.is_not_empty(),
+    provider="anthropic",
+    model="claude-sonnet-4-6-20260218",
+)
+def test_anthropic(llm):
+    output = llm("What is 2+2?")
+    assert "4" in output.content
+```
+
+## Supported models
+
+`claude-opus-4-6-20260218`, `claude-sonnet-4-6-20260218`, `claude-haiku-4-5-20251001`
+
+## Per-call model override
+
+```python
+@llm_test(
+    expect.is_not_empty(),
+    provider="anthropic",
+    model="claude-sonnet-4-6-20260218",
+)
+def test_override(llm):
+    output = llm("Quick answer: 2+2?", model="claude-haiku-4-5-20251001")
+    assert output.content
+```

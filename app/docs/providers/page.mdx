@@ -1,0 +1,27 @@
+# Providers
+
+Install only what you need:
+
+| Provider | Package | Models |
+|---|---|---|
+| OpenAI | `llmtest[openai]` | GPT-5.x, GPT-4.1, o3, o4-mini |
+| Anthropic | `llmtest[anthropic]` | Claude Opus 4.6, Sonnet 4.6, Haiku 4.5 |
+| Ollama | `llmtest[ollama]` | Any model running locally |
+
+## Provider selection
+
+```python
+@llm_test(
+    expect.is_not_empty(),
+    provider="openai",
+    model="gpt-5-mini",
+)
+def test_openai(llm): ...
+```
+
+## Default provider
+
+If no provider is specified, llmtest checks for available API keys:
+1. `OPENAI_API_KEY` → OpenAI
+2. `ANTHROPIC_API_KEY` → Anthropic
+3. Ollama (localhost) → Ollama
