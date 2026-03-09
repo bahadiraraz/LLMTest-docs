@@ -14,7 +14,7 @@ All text and performance assertions are **deterministic** — zero LLM calls.
 ### In `@llm_test` decorator
 
 ```python
-from llmtest import expect, llm_test
+from assertllm import expect, llm_test
 
 @llm_test(
     expect.contains("Paris"),
@@ -28,7 +28,7 @@ def test_capital(llm):
 ### Standalone
 
 ```python
-from llmtest import expect
+from assertllm import expect
 
 result = expect.contains("Paris").check(output)
 assert result.passed

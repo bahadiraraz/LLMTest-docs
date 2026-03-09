@@ -3,15 +3,15 @@
 Test your [Pydantic AI](https://ai.pydantic.dev) agents with llmtest assertions.
 
 ```bash
-pip install pytest-llmtest[pydantic-ai]
+pip install assertllm[pydantic-ai]
 ```
 
 ## Basic usage
 
 ```python
 from pydantic_ai import Agent
-from llmtest.integrations.pydantic_ai import PydanticAIAdapter
-from llmtest import expect
+from assertllm.integrations.pydantic_ai import PydanticAIAdapter
+from assertllm import expect
 
 agent = Agent('openai:gpt-5-mini', system_prompt='Be concise.')
 adapter = PydanticAIAdapter(agent)

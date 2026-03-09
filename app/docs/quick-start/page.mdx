@@ -3,7 +3,7 @@
 ## 1. Install
 
 ```bash
-pip install pytest-llmtest[openai]
+pip install assertllm[openai]
 export OPENAI_API_KEY=sk-...
 ```
 
@@ -11,7 +11,7 @@ export OPENAI_API_KEY=sk-...
 
 ```python
 # test_my_llm.py
-from llmtest import expect, llm_test
+from assertllm import expect, llm_test
 
 @llm_test(
     expect.is_not_empty(),
@@ -33,7 +33,7 @@ pytest test_my_llm.py -v
 ```
 test_my_llm.py::test_greeting PASSED    [  0.6s]
 
-────────── llmtest summary ──────────
+────────── assertllm summary ──────────
   LLM tests: 1 passed
   Total cost: $0.000012
   Avg latency: 612ms

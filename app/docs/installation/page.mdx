@@ -3,11 +3,11 @@
 Install llmtest with the provider you need:
 
 ```bash
-pip install pytest-llmtest[openai]       # OpenAI (GPT-5.x, GPT-4.1, o3, o4-mini)
-pip install pytest-llmtest[anthropic]    # Anthropic (Claude Opus 4.6, Sonnet 4.6, Haiku 4.5)
-pip install pytest-llmtest[ollama]       # Local (Ollama — no API key)
-pip install pytest-llmtest[pydantic-ai]  # Pydantic AI agents
-pip install pytest-llmtest[all]          # Everything
+pip install assertllm[openai]       # OpenAI (GPT-5.x, GPT-4.1, o3, o4-mini)
+pip install assertllm[anthropic]    # Anthropic (Claude Opus 4.6, Sonnet 4.6, Haiku 4.5)
+pip install assertllm[ollama]       # Local (Ollama — no API key)
+pip install assertllm[pydantic-ai]  # Pydantic AI agents
+pip install assertllm[all]          # Everything
 ```
 
 ## Package managers
@@ -15,25 +15,25 @@ pip install pytest-llmtest[all]          # Everything
 ### uv
 
 ```bash
-uv add pytest-llmtest[openai]
+uv add assertllm[openai]
 ```
 
 ### PDM
 
 ```bash
-pdm add pytest-llmtest[openai]
+pdm add assertllm[openai]
 ```
 
 ### Poetry
 
 ```bash
-poetry add pytest-llmtest[openai]
+poetry add assertllm[openai]
 ```
 
 ### Rye
 
 ```bash
-rye add pytest-llmtest --features openai
+rye add assertllm --features openai
 ```
 
 ### Conda + pip
@@ -41,7 +41,7 @@ rye add pytest-llmtest --features openai
 ```bash
 conda create -n llmtest python=3.12
 conda activate llmtest
-pip install pytest-llmtest[openai]
+pip install assertllm[openai]
 ```
 
 ## Requirements
