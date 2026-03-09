@@ -1,12 +1,14 @@
+import { Tabs, Callout } from 'nextra/components'
+
 # Pydantic AI
 
-Test your [Pydantic AI](https://ai.pydantic.dev) agents with llmtest assertions.
+Test your [Pydantic AI](https://ai.pydantic.dev) agents with assertllm assertions.
 
 ```bash
 pip install assertllm[pydantic-ai]
 ```
 
-## Basic usage
+## Basic Usage
 
 ```python
 from pydantic_ai import Agent
@@ -24,8 +26,8 @@ def test_my_agent():
     assert expect.cost_under(0.01).check(output).passed
 ```
 
-## Structured output
-
+<Tabs items={['Structured Output', 'Tool Calling', 'Dependencies', 'Retry', 'Async']}>
+  <Tabs.Tab>
 ```python
 from pydantic import BaseModel
 
@@ -40,9 +42,8 @@ def test_structured():
     output = adapter.run_sync("Tell me about Paris")
     assert expect.structured_output(CityInfo).check(output).passed
 ```
-
-## Tool calling
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```python
 agent = Agent('openai:gpt-5-mini')
 
@@ -57,9 +58,8 @@ def test_tools():
     assert output.tool_calls
     assert output.tool_calls[0]["name"] == "add"
 ```
-
-## Dependencies
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```python
 from dataclasses import dataclass
 
@@ -74,9 +74,8 @@ def test_with_deps():
     output = adapter.run_sync("Fetch data", deps=MyDeps(api_key="test"))
     assert output.content
 ```
-
-## Retry
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```python
 def test_retry():
     output = adapter.run_sync(
@@ -86,9 +85,8 @@ def test_retry():
     )
     assert "Paris" in output.content
 ```
-
-## Async
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```python
 import pytest
 
@@ -97,3 +95,5 @@ async def test_async():
     output = await adapter.run("What is the capital of France?")
     assert expect.contains("Paris").check(output).passed
 ```
+  </Tabs.Tab>
+</Tabs>

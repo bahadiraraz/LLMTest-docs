@@ -1,33 +1,46 @@
+import { Tabs, Callout } from 'nextra/components'
+
 # Reporters
 
+<Tabs items={['JSON', 'JUnit', 'pytest Summary']}>
+  <Tabs.Tab>
 ## JSON Reporter
 
-```python
+```python filename="report_json.py"
 from llmtest_core.reporters import JSONReporter
 
 reporter = JSONReporter()
 print(reporter.render(suite_result))
 ```
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ## JUnit Reporter
 
-For GitHub Actions, Jenkins:
+For GitHub Actions, Jenkins, and other CI systems:
 
-```python
+```python filename="report_junit.py"
 from llmtest_core.reporters import JUnitReporter
 
 reporter = JUnitReporter()
 with open("results.xml", "w") as f:
     f.write(reporter.render(suite_result))
 ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+## pytest Summary
 
-## pytest summary
+Automatic after every test run — no configuration needed:
 
-Automatic after test runs:
-
-```
+```ansi filename="Output"
 ────────── assertllm summary ──────────
   LLM tests: 5 passed, 1 failed
+  Assertions: 14/15 passed
   Total cost: $0.000234
   Avg latency: 823ms
 ```
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="info">
+  The pytest summary is always shown automatically. Use JSON/JUnit reporters for programmatic access or CI integration.
+</Callout>

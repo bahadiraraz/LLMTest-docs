@@ -1,8 +1,14 @@
+import { Steps, Callout } from 'nextra/components'
+
 # CI/CD
 
 ## GitHub Actions
 
-```yaml
+<Steps>
+
+### Set up the workflow
+
+```yaml filename=".github/workflows/llm-tests.yml"
 name: LLM Tests
 on:
   push:
@@ -34,9 +40,9 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 ```
 
-## Markers
+### Add test markers
 
-```python
+```python filename="test_ci.py"
 import pytest
 
 @pytest.mark.llmtest
@@ -45,14 +51,24 @@ def test_with_llm(llm):
     assert output.content
 ```
 
-```bash
+### Run selectively
+
+```bash filename="Terminal"
 pytest -m llmtest           # only LLM tests
 pytest -m "not llmtest"     # everything except LLM tests
 ```
 
-## Cost control
+</Steps>
 
-```python
+<Callout type="warning">
+  **Cost control** — LLM tests cost money. Only run them on `main` or use cheap models like `gpt-4o-mini` in CI.
+</Callout>
+
+## Cost Control
+
+```python filename="test_budget.py"
+from assertllm import expect, llm_test
+
 @llm_test(
     expect.cost_under(0.01),
     expect.latency_under(10000),
@@ -61,3 +77,15 @@ pytest -m "not llmtest"     # everything except LLM tests
 def test_ci_safe(llm):
     llm("What is 2+2?")
 ```
+
+```ansi filename="Output"
+test_budget.py::test_ci_safe
+   "4"
+  ✓ cost_under(0.01) — $0.000005
+  ✓ latency_under(10000) — 234ms
+  PASSED    [0.2s]
+```
+
+<Callout type="info">
+  Use `expect.cost_under()` to set a hard budget per test. Tests that exceed the limit will fail immediately.
+</Callout>

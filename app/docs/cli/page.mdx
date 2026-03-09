@@ -1,36 +1,40 @@
+import { Steps, Callout } from 'nextra/components'
+
 # CLI
 
-## Commands
+<Steps>
 
-### `llmtest init`
+### Initialize a project
 
 Create a starter test file:
 
-```bash
+```bash filename="Terminal"
 llmtest init
 ```
 
-### `llmtest run`
+### Run LLM tests
 
-Run LLM tests:
-
-```bash
+```bash filename="Terminal"
 llmtest run tests/
 llmtest run tests/test_agent.py
 ```
 
-### `llmtest providers`
+### Check available providers
 
-List available providers:
-
-```bash
+```bash filename="Terminal"
 llmtest providers
 ```
 
-```
+```ansi filename="Output"
 Provider      Status    Models
 ──────────────────────────────────────
 openai        ✓ ready   gpt-5-mini, gpt-5, gpt-4.1
 anthropic     ✓ ready   claude-opus-4-6, claude-sonnet-4-6
 ollama        ✗ not running
 ```
+
+</Steps>
+
+<Callout type="info">
+  `llmtest providers` auto-detects which providers are available based on your environment variables and running services.
+</Callout>

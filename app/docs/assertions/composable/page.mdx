@@ -1,8 +1,10 @@
+import { Callout } from 'nextra/components'
+
 # Composable Assertions
 
 Combine assertions with logical operators.
 
-## `all_of(*assertions)` — AND
+## all\_of — AND
 
 ```python
 expect.all_of(
@@ -12,7 +14,7 @@ expect.all_of(
 )
 ```
 
-## `any_of(*assertions)` — OR
+## any\_of — OR
 
 ```python
 expect.any_of(
@@ -21,13 +23,15 @@ expect.any_of(
 )
 ```
 
-## `custom(fn)`
+## custom
 
 ```python
 expect.custom(lambda output: len(output.content.split()) < 50)
 ```
 
-## Operators: `&` and `|`
+## Operators
+
+Use `&` for AND and `|` for OR:
 
 ```python
 @llm_test(
@@ -51,3 +55,7 @@ expect.all_of(
     expect.latency_under(3000),
 )
 ```
+
+<Callout type="info">
+  `&` is shorthand for `all_of`, `|` is shorthand for `any_of`. Use whichever reads better in your tests.
+</Callout>

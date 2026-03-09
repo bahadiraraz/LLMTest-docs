@@ -1,8 +1,12 @@
+import { Cards } from 'nextra/components'
+
 # pytest Plugin
 
-llmtest integrates with pytest through two mechanisms:
+assertllm integrates with pytest through two mechanisms:
 
-1. **`@llm_test` decorator** — declare assertions, provider, model, and config in one place
-2. **`llm` fixture** — standard pytest fixture for calling LLMs directly
+<Cards num={2}>
+  <Cards.Card title="@llm_test Decorator" href="/docs/pytest-plugin/decorator" arrow />
+  <Cards.Card title="llm Fixture" href="/docs/pytest-plugin/fixture" arrow />
+</Cards>
 
 Both can be mixed in the same test suite.

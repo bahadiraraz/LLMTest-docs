@@ -1,13 +1,17 @@
+import { Callout } from 'nextra/components'
+
 # Anthropic
 
-```bash
+```bash filename="Terminal"
 pip install assertllm[anthropic]
 export ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 ## Usage
 
-```python
+```python filename="test_anthropic.py"
+from assertllm import expect, llm_test
+
 @llm_test(
     expect.is_not_empty(),
     expect.contains("4"),
@@ -18,16 +22,24 @@ def test_anthropic(llm):
     llm("What is 2+2?")
 ```
 
-## Supported models
+```ansi filename="Output"
+test_anthropic.py::test_anthropic
+   "2 + 2 equals 4."
+  ✓ is_not_empty()
+  ✓ contains("4")
+  PASSED    [0.5s]
+```
+
+## Supported Models
 
 | Model | ID |
 |---|---|
 | Claude Sonnet 4 | `claude-sonnet-4-20250514` |
 | Claude Haiku 4.5 | `claude-haiku-4-5-20251001` |
 
-## Per-call model override
+## Per-call Model Override
 
-```python
+```python filename="test_override.py"
 @llm_test(
     expect.is_not_empty(),
     provider="anthropic",

@@ -1,6 +1,8 @@
+import { Tabs, Callout } from 'nextra/components'
+
 # Installation
 
-Install llmtest with the provider you need:
+Install assertllm with the provider you need:
 
 ```bash
 pip install assertllm[openai]       # OpenAI (GPT-5.x, GPT-4.1, o3, o4-mini)
@@ -10,54 +12,69 @@ pip install assertllm[pydantic-ai]  # Pydantic AI agents
 pip install assertllm[all]          # Everything
 ```
 
-## Package managers
+## Package Managers
 
-### uv
-
+<Tabs items={['pip', 'uv', 'pdm', 'poetry', 'rye', 'conda']}>
+  <Tabs.Tab>
+```bash
+pip install assertllm[openai]
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```bash
 uv add assertllm[openai]
 ```
-
-### PDM
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```bash
 pdm add assertllm[openai]
 ```
-
-### Poetry
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```bash
 poetry add assertllm[openai]
 ```
-
-### Rye
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```bash
 rye add assertllm --features openai
 ```
-
-### Conda + pip
-
+  </Tabs.Tab>
+  <Tabs.Tab>
 ```bash
 conda create -n llmtest python=3.12
 conda activate llmtest
 pip install assertllm[openai]
 ```
+  </Tabs.Tab>
+</Tabs>
 
 ## Requirements
 
 - Python 3.10+
 - Pydantic 2.0+
 
-## API keys
+## API Keys
 
+<Callout type="warning">
+  API keys are required for cloud providers. Ollama runs locally — no key needed.
+</Callout>
+
+<Tabs items={['OpenAI', 'Anthropic', 'Ollama']}>
+  <Tabs.Tab>
 ```bash
-# OpenAI
 export OPENAI_API_KEY=sk-...
-
-# Anthropic
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-
-# Ollama — no key needed, just run the server
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```bash
+# No API key needed — just run the server
 ollama serve
 ```
+  </Tabs.Tab>
+</Tabs>

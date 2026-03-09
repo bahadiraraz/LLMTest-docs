@@ -1,8 +1,10 @@
+import { Callout } from 'nextra/components'
+
 # Agent Assertions
 
 Validate tool/function calling behavior.
 
-## `tool_called(name, times=None, min_times=1, max_times=None)`
+## tool\_called
 
 ```python
 expect.tool_called("web_search")           # called at least once
@@ -10,7 +12,7 @@ expect.tool_called("web_search", times=1)  # called exactly once
 expect.tool_called("web_search", min_times=2)  # at least 2 times
 ```
 
-## `no_loop_detected()`
+## no\_loop\_detected
 
 Detects infinite loops in tool call traces (same tool called 3+ times consecutively).
 
@@ -18,7 +20,11 @@ Detects infinite loops in tool call traces (same tool called 3+ times consecutiv
 expect.no_loop_detected()
 ```
 
-## `tool_call_order(expected_tools)`
+<Callout type="warning">
+  Loop detection looks for the same tool called 3+ times in a row. This catches runaway agents before they burn through your budget.
+</Callout>
+
+## tool\_call\_order
 
 Checks tools were called in order.
 
@@ -26,9 +32,11 @@ Checks tools were called in order.
 expect.tool_call_order(["search", "parse", "summarize"])
 ```
 
-## Full example
+## Full Example
 
-```python
+```python filename="test_agent.py"
+from assertllm import expect, llm_test
+
 @llm_test(
     expect.tool_called("search", min_times=1),
     expect.tool_call_order(["search", "summarize"]),
@@ -62,4 +70,14 @@ def test_research_agent(llm):
         },
     ]
     llm("Find and summarize recent AI news", tools=tools)
+```
+
+```ansi filename="Output"
+test_agent.py::test_research_agent
+  Tool calls: search → summarize
+  ✓ tool_called("search", min_times=1) — called 1 time
+  ✓ tool_call_order(["search", "summarize"])
+  ✓ no_loop_detected()
+  ✓ latency_under(5000) — 2341ms
+  PASSED    [2.3s]
 ```

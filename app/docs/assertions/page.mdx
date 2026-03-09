@@ -1,19 +1,25 @@
+import { Cards, Callout } from 'nextra/components'
+
 # Assertions
 
-llmtest provides 22+ built-in assertions in four categories:
+assertllm provides 22+ built-in assertions in four categories.
 
-- **Text** — content validation (contains, regex, JSON, length, similarity)
-- **Performance** — latency, cost, token count
-- **Agent** — tool calls, loop detection, call ordering
-- **Composable** — combine assertions with AND, OR, custom logic
+<Callout type="info">
+  All text and performance assertions are **deterministic** — zero LLM calls, instant results.
+</Callout>
 
-All text and performance assertions are **deterministic** — zero LLM calls.
+<Cards num={2}>
+  <Cards.Card title="Text — contains, regex, JSON, similarity..." href="/docs/assertions/text" arrow />
+  <Cards.Card title="Performance — latency, cost, tokens" href="/docs/assertions/performance" arrow />
+  <Cards.Card title="Agent — tool calls, loops, ordering" href="/docs/assertions/agent" arrow />
+  <Cards.Card title="Composable — AND, OR, custom logic" href="/docs/assertions/composable" arrow />
+</Cards>
 
 ## Usage
 
 ### In `@llm_test` decorator
 
-```python
+```python filename="test_capital.py"
 from assertllm import expect, llm_test
 
 @llm_test(
@@ -25,9 +31,17 @@ def test_capital(llm):
     llm("What is the capital of France?")
 ```
 
+```ansi filename="Output"
+test_capital.py::test_capital
+   "The capital of France is Paris."
+  ✓ contains("Paris")
+  ✓ latency_under(2000) — 823ms
+  PASSED    [0.8s]
+```
+
 ### Standalone
 
-```python
+```python filename="check.py"
 from assertllm import expect
 
 result = expect.contains("Paris").check(output)

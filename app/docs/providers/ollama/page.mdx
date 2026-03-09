@@ -1,6 +1,12 @@
+import { Steps, Callout } from 'nextra/components'
+
 # Ollama
 
 Run LLM tests locally — no API key, no cost.
+
+<Steps>
+
+### Install and pull a model
 
 ```bash
 pip install assertllm[ollama]
@@ -8,7 +14,7 @@ ollama pull llama3.2
 ollama serve
 ```
 
-## Usage
+### Write a test
 
 ```python
 @llm_test(
@@ -21,7 +27,9 @@ def test_local(llm):
     assert "4" in output.content
 ```
 
-## Supported models
+</Steps>
+
+## Supported Models
 
 Any model in your local Ollama: `llama3.2`, `mistral`, `codellama`, `phi3`, `gemma2`, `deepseek-r1`
 
@@ -29,13 +37,17 @@ Any model in your local Ollama: `llama3.2`, `mistral`, `codellama`, `phi3`, `gem
 ollama list  # see available models
 ```
 
-## Custom host
+## Custom Host
 
 ```bash
 export OLLAMA_HOST=http://my-server:11434
 ```
 
-## When to use
+## When to Use
+
+<Callout type="info">
+  Ollama is ideal for local development, CI/CD without API keys, privacy-sensitive workloads, and offline testing.
+</Callout>
 
 - **Local development** — no API costs, no rate limits
 - **CI/CD** — run tests without API keys

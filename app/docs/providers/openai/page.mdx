@@ -1,13 +1,17 @@
+import { Callout } from 'nextra/components'
+
 # OpenAI
 
-```bash
+```bash filename="Terminal"
 pip install assertllm[openai]
 export OPENAI_API_KEY=sk-...
 ```
 
 ## Usage
 
-```python
+```python filename="test_openai.py"
+from assertllm import expect, llm_test
+
 @llm_test(
     expect.is_not_empty(),
     expect.contains("4"),
@@ -18,13 +22,21 @@ def test_openai(llm):
     llm("What is 2+2?")
 ```
 
-## Supported models
+```ansi filename="Output"
+test_openai.py::test_openai
+   "2 + 2 = 4"
+  ✓ is_not_empty()
+  ✓ contains("4")
+  PASSED    [0.3s]
+```
+
+## Supported Models
 
 `gpt-4o`, `gpt-4o-mini`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `o3`, `o4-mini`, and custom fine-tuned models.
 
-## Structured output
+## Structured Output
 
-```python
+```python filename="test_structured.py"
 from pydantic import BaseModel
 
 class MathResult(BaseModel):
@@ -40,9 +52,9 @@ def test_structured(llm):
     llm("What is 2+2? Respond as JSON.", response_format=MathResult)
 ```
 
-## Tool calling
+## Tool Calling
 
-```python
+```python filename="test_tools.py"
 @llm_test(
     expect.tool_called("get_weather"),
     provider="openai",

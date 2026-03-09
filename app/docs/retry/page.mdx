@@ -1,12 +1,16 @@
-# Retry
+import { Tabs, Callout } from 'nextra/components'
 
-LLMs are non-deterministic. llmtest has built-in retry at two levels.
+# Retry & Runs
 
+LLMs are non-deterministic. assertllm has built-in retry at two levels.
+
+<Tabs items={['Decorator Retry', 'Statistical Runs', 'Fixture Retry']}>
+  <Tabs.Tab>
 ## Decorator-level retry
 
 Retry the **entire test** up to N times:
 
-```python
+```python filename="test_retry.py"
 @llm_test(
     expect.contains("Paris"),
     model="gpt-4o-mini",
@@ -17,11 +21,24 @@ def test_capital_with_retry(llm):
     llm("What is the capital of France?")
 ```
 
+```ansi filename="Output"
+test_retry.py::test_capital_with_retry
+  Attempt 1/3: FAILED — contains("Paris") not found
+  Attempt 2/3: PASSED
+  ✓ contains("Paris")
+  PASSED    [1.4s]
+```
+
+<Callout>
+  Use decorator retries when the **whole test is flaky** and you want it to pass if any single attempt succeeds.
+</Callout>
+  </Tabs.Tab>
+  <Tabs.Tab>
 ## Statistical testing (runs)
 
 Run the test N times and pass if enough runs succeed:
 
-```python
+```python filename="test_stats.py"
 @llm_test(
     expect.contains("Paris"),
     model="gpt-4o-mini",
@@ -32,11 +49,26 @@ def test_capital_reliable(llm):
     llm("What is the capital of France?")
 ```
 
+```ansi filename="Output"
+test_stats.py::test_capital_reliable
+  Run 1/10: PASSED
+  Run 2/10: PASSED
+  ...
+  Run 10/10: PASSED
+  Pass rate: 9/10 (90%) >= 80% required
+  PASSED    [8.2s]
+```
+
+<Callout type="info">
+  This runs the test 10 times and passes if at least 8/10 (80%) succeed. Great for measuring reliability.
+</Callout>
+  </Tabs.Tab>
+  <Tabs.Tab>
 ## Fixture-level retry
 
 Retry **individual LLM calls** with a condition:
 
-```python
+```python filename="test_fixture_retry.py"
 def test_with_retry_condition(llm):
     output = llm(
         "Name a European capital",
@@ -47,9 +79,13 @@ def test_with_retry_condition(llm):
     assert output.content
 ```
 
-`retry_if` returns `True` to retry, `False` to accept.
+<Callout>
+  `retry_if` returns `True` to retry, `False` to accept. Use when a **specific LLM call** needs a particular output.
+</Callout>
+  </Tabs.Tab>
+</Tabs>
 
-## When to use which
+## When to Use Which
 
 | Level | Use when |
 |---|---|

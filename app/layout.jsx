@@ -1,16 +1,17 @@
 import { Footer, Layout, Navbar } from 'nextra-theme-docs'
 import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
+import 'nextra-theme-docs/style.css'
 import './globals.css'
 
 export const metadata = {
-  title: 'llmtest — The pytest for LLMs',
+  title: 'assertllm — The pytest for LLMs',
   description: 'Test your AI outputs like you test your code. Fast, Pydantic-based assertions for AI applications.',
 }
 
 const navbar = (
   <Navbar
-    logo={<span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><img src="/icon.svg" alt="" width={20} height={20} /><b>LLMTest</b></span>}
+    logo={<span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><img src="/icon.svg" alt="" width={20} height={20} /><b>assertllm</b></span>}
     projectLink="https://github.com/bahadiraraz/llmtest"
   />
 )

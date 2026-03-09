@@ -1,10 +1,12 @@
-# @llm_test Decorator
+import { Callout } from 'nextra/components'
+
+# @llm\_test Decorator
 
 The primary way to write LLM tests.
 
-## Basic usage
+## Basic Usage
 
-```python
+```python filename="test_capital.py"
 from assertllm import expect, llm_test
 
 @llm_test(
@@ -14,6 +16,20 @@ from assertllm import expect, llm_test
 )
 def test_capital(llm):
     llm("What is the capital of France?")
+```
+
+```ansi filename="Output"
+test_capital.py::test_capital
+   "The capital of France is Paris."
+  ✓ contains("Paris")
+  ✓ latency_under(2000) — 823ms
+  PASSED    [0.8s]
+
+────────── assertllm summary ──────────
+  LLM tests: 1 passed
+  Assertions: 2/2 passed
+  Total cost: $0.000018
+  Avg latency: 823ms
 ```
 
 ## Parameters
@@ -32,7 +48,11 @@ def test_capital(llm):
 | `runs` | `int` | `1` | Number of times to run the test |
 | `min_pass_rate` | `float` | `1.0` | Minimum pass rate (0.0–1.0) |
 
-## How it works
+## How It Works
+
+<Callout>
+  The decorator injects the `llm` callable, runs your test, then checks all assertions against the last `LLMOutput`. If any fail, the test fails with a detailed error message.
+</Callout>
 
 1. The decorator injects the `llm` callable into your test function
 2. Your test runs, making LLM calls via `llm()`
@@ -40,9 +60,9 @@ def test_capital(llm):
 4. If any assertion fails, the test fails with a detailed error message
 5. If `retries > 0` and the test fails, it retries up to N times
 
-## Per-call overrides
+## Per-call Overrides
 
-```python
+```python filename="test_override.py"
 @llm_test(
     expect.is_not_empty(),
     provider="anthropic",
@@ -56,11 +76,11 @@ def test_with_override(llm):
     )
 ```
 
-## Statistical testing
+## Statistical Testing
 
-Run a test multiple times and pass if enough runs succeed. Useful for non-deterministic outputs.
+Run a test multiple times and pass if enough runs succeed.
 
-```python
+```python filename="test_stats.py"
 @llm_test(
     expect.contains("Paris"),
     expect.not_contains("I'm not sure"),
@@ -73,4 +93,16 @@ def test_capital_reliable(llm):
     llm("What is the capital of France?")
 ```
 
-This runs the test 10 times and passes if at least 8/10 (80%) succeed.
+```ansi filename="Output"
+test_stats.py::test_capital_reliable
+  Run 1/10: PASSED
+  Run 2/10: PASSED
+  ...
+  Run 10/10: PASSED
+  Pass rate: 9/10 (90%) >= 80% required
+  PASSED    [8.2s]
+```
+
+<Callout type="info">
+  This runs the test 10 times and passes if at least 8/10 (80%) succeed.
+</Callout>
