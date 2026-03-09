@@ -5,11 +5,11 @@ import { Tabs, Callout } from 'nextra/components'
 Install assertllm with the provider you need:
 
 ```bash
-pip install assertllm[openai]       # OpenAI (GPT-5.x, GPT-4.1, o3, o4-mini)
-pip install assertllm[anthropic]    # Anthropic (Claude Opus 4.6, Sonnet 4.6, Haiku 4.5)
-pip install assertllm[ollama]       # Local (Ollama — no API key)
-pip install assertllm[pydantic-ai]  # Pydantic AI agents
-pip install assertllm[all]          # Everything
+pip install "assertllm[openai]"       # OpenAI (GPT-5.x, GPT-4.1, o3, o4-mini)
+pip install "assertllm[anthropic]"    # Anthropic (Claude Opus 4.6, Sonnet 4.6, Haiku 4.5)
+pip install "assertllm[ollama]"       # Local (Ollama — no API key)
+pip install "assertllm[pydantic-ai]"  # Pydantic AI agents
+pip install "assertllm[all]"          # Everything
 ```
 
 ## Package Managers
@@ -17,22 +17,22 @@ pip install assertllm[all]          # Everything
 <Tabs items={['pip', 'uv', 'pdm', 'poetry', 'rye', 'conda']}>
   <Tabs.Tab>
 ```bash
-pip install assertllm[openai]
+pip install "assertllm[openai]"
 ```
   </Tabs.Tab>
   <Tabs.Tab>
 ```bash
-uv add assertllm[openai]
+uv add "assertllm[openai]"
 ```
   </Tabs.Tab>
   <Tabs.Tab>
 ```bash
-pdm add assertllm[openai]
+pdm add "assertllm[openai]"
 ```
   </Tabs.Tab>
   <Tabs.Tab>
 ```bash
-poetry add assertllm[openai]
+poetry add "assertllm[openai]"
 ```
   </Tabs.Tab>
   <Tabs.Tab>
@@ -44,7 +44,7 @@ rye add assertllm --features openai
 ```bash
 conda create -n llmtest python=3.12
 conda activate llmtest
-pip install assertllm[openai]
+pip install "assertllm[openai]"
 ```
   </Tabs.Tab>
 </Tabs>

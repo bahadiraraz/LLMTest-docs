@@ -23,7 +23,7 @@ It provides 22+ built-in assertions that are **deterministic and instant** — n
 ## Architecture
 
 ```bash
-pip install assertllm[openai]      # or [anthropic], [ollama], [all]
+pip install "assertllm[openai]"      # or [anthropic], [ollama], [all]
 ```
 
 <FileTree>
@@ -39,5 +39,5 @@ pip install assertllm[openai]      # or [anthropic], [ollama], [all]
 </FileTree>
 
 <Callout>
-  The core has **zero LLM dependencies**. Provider extras are installed separately so you only pull in what you need: `pip install assertllm[openai]`
+  The core has **zero LLM dependencies**. Provider extras are installed separately so you only pull in what you need: `pip install "assertllm[openai]"`
 </Callout>
