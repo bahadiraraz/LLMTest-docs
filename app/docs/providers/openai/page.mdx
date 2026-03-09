@@ -10,17 +10,17 @@ export OPENAI_API_KEY=sk-...
 ```python
 @llm_test(
     expect.is_not_empty(),
+    expect.contains("4"),
     provider="openai",
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
 )
 def test_openai(llm):
-    output = llm("What is 2+2?")
-    assert "4" in output.content
+    llm("What is 2+2?")
 ```
 
 ## Supported models
 
-`gpt-5-mini`, `gpt-5`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `o3`, `o4-mini`, and custom fine-tuned models.
+`gpt-4o`, `gpt-4o-mini`, `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`, `o3`, `o4-mini`, and custom fine-tuned models.
 
 ## Structured output
 
@@ -34,10 +34,10 @@ class MathResult(BaseModel):
 @llm_test(
     expect.structured_output(MathResult),
     provider="openai",
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
 )
 def test_structured(llm):
-    output = llm("What is 2+2? Respond as JSON.", response_format=MathResult)
+    llm("What is 2+2? Respond as JSON.", response_format=MathResult)
 ```
 
 ## Tool calling
@@ -46,7 +46,7 @@ def test_structured(llm):
 @llm_test(
     expect.tool_called("get_weather"),
     provider="openai",
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
 )
 def test_tools(llm):
     tools = [{
@@ -60,6 +60,5 @@ def test_tools(llm):
             },
         },
     }]
-    output = llm("Weather in Paris?", tools=tools)
-    assert output.tool_calls[0]["name"] == "get_weather"
+    llm("Weather in Paris?", tools=tools)
 ```

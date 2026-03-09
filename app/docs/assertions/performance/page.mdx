@@ -28,9 +28,8 @@ expect.token_count_under(500)  # max 500 total tokens
     expect.latency_under(2000),
     expect.cost_under(0.01),
     expect.token_count_under(500),
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
 )
 def test_fast_and_cheap(llm):
-    output = llm("What is 2+2?")
-    assert "4" in output.content
+    llm("What is 2+2?")
 ```

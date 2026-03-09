@@ -10,17 +10,20 @@ export ANTHROPIC_API_KEY=sk-ant-...
 ```python
 @llm_test(
     expect.is_not_empty(),
+    expect.contains("4"),
     provider="anthropic",
-    model="claude-sonnet-4-6-20260218",
+    model="claude-sonnet-4-6",
 )
 def test_anthropic(llm):
-    output = llm("What is 2+2?")
-    assert "4" in output.content
+    llm("What is 2+2?")
 ```
 
 ## Supported models
 
-`claude-opus-4-6-20260218`, `claude-sonnet-4-6-20260218`, `claude-haiku-4-5-20251001`
+| Model | ID |
+|---|---|
+| Claude Sonnet 4 | `claude-sonnet-4-20250514` |
+| Claude Haiku 4.5 | `claude-haiku-4-5-20251001` |
 
 ## Per-call model override
 
@@ -28,9 +31,8 @@ def test_anthropic(llm):
 @llm_test(
     expect.is_not_empty(),
     provider="anthropic",
-    model="claude-sonnet-4-6-20260218",
+    model="claude-sonnet-4-6",
 )
 def test_override(llm):
-    output = llm("Quick answer: 2+2?", model="claude-haiku-4-5-20251001")
-    assert output.content
+    llm("Quick answer: 2+2?", model="claude-haiku-4-5-20251001")
 ```

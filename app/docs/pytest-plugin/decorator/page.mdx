@@ -10,11 +10,10 @@ from llmtest import expect, llm_test
 @llm_test(
     expect.contains("Paris"),
     expect.latency_under(2000),
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
 )
 def test_capital(llm):
-    output = llm("What is the capital of France?")
-    assert "Paris" in output.content
+    llm("What is the capital of France?")
 ```
 
 ## Parameters
@@ -30,6 +29,8 @@ def test_capital(llm):
 | `tags` | `list[str]` | `None` | Test tags for filtering |
 | `retries` | `int` | `0` | Retry count on failure |
 | `retry_delay` | `float` | `1.0` | Seconds between retries |
+| `runs` | `int` | `1` | Number of times to run the test |
+| `min_pass_rate` | `float` | `1.0` | Minimum pass rate (0.0–1.0) |
 
 ## How it works
 
@@ -45,13 +46,31 @@ def test_capital(llm):
 @llm_test(
     expect.is_not_empty(),
     provider="anthropic",
-    model="claude-sonnet-4-6-20260218",
+    model="claude-sonnet-4-6",
 )
 def test_with_override(llm):
-    output = llm(
+    llm(
         "Explain gravity",
         model="claude-haiku-4-5-20251001",
         temperature=0.0,
     )
-    assert output.content
 ```
+
+## Statistical testing
+
+Run a test multiple times and pass if enough runs succeed. Useful for non-deterministic outputs.
+
+```python
+@llm_test(
+    expect.contains("Paris"),
+    expect.not_contains("I'm not sure"),
+    expect.latency_under(3000),
+    model="claude-sonnet-4-6",
+    runs=10,
+    min_pass_rate=0.8,
+)
+def test_capital_reliable(llm):
+    llm("What is the capital of France?")
+```
+
+This runs the test 10 times and passes if at least 8/10 (80%) succeed.

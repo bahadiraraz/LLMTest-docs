@@ -19,11 +19,10 @@ from llmtest import expect, llm_test
 @llm_test(
     expect.contains("Paris"),
     expect.latency_under(2000),
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
 )
 def test_capital(llm):
-    output = llm("What is the capital of France?")
-    assert "Paris" in output.content
+    llm("What is the capital of France?")
 ```
 
 ### Standalone

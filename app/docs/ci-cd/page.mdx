@@ -31,7 +31,7 @@ jobs:
       - run: pip install -e ".[dev,openai,anthropic]"
       - run: pytest -m llmtest --tb=short
         env:
-          OPENAI_API_KEY: $\{{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 ```
 
 ## Markers
@@ -41,7 +41,7 @@ import pytest
 
 @pytest.mark.llmtest
 def test_with_llm(llm):
-    output = llm("Hello", model="gpt-5-mini")
+    output = llm("Hello", model="gpt-4o-mini")
     assert output.content
 ```
 
@@ -56,9 +56,8 @@ pytest -m "not llmtest"     # everything except LLM tests
 @llm_test(
     expect.cost_under(0.01),
     expect.latency_under(10000),
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
 )
 def test_ci_safe(llm):
-    output = llm("What is 2+2?")
-    assert "4" in output.content
+    llm("What is 2+2?")
 ```

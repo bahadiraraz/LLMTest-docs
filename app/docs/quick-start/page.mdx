@@ -17,12 +17,11 @@ from llmtest import expect, llm_test
     expect.is_not_empty(),
     expect.contains("hello", case_sensitive=False),
     expect.latency_under(3000),
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
     system_prompt="You are a friendly bot.",
 )
 def test_greeting(llm):
-    output = llm("Say hello")
-    assert output.content
+    llm("Say hello")
 ```
 
 ## 3. Run
@@ -44,7 +43,7 @@ test_my_llm.py::test_greeting PASSED    [  0.6s]
 
 ```python
 def test_with_fixture(llm):
-    output = llm("Say hello", model="gpt-5-mini")
+    output = llm("Say hello", model="gpt-4o-mini")
     assert "hello" in output.content.lower()
     assert output.latency_ms < 5000
     assert output.cost_estimate_usd < 0.01
@@ -63,4 +62,4 @@ Every `llm()` call returns an `LLMOutput` object:
 | `output_tokens` | `int` | Completion tokens |
 | `cost_estimate_usd` | `float` | Estimated cost |
 | `tool_calls` | `list[dict]` | Tool/function calls made |
-| `raw_response` | `Any` | The original provider response |
+| `raw` | `dict` | The original provider response |

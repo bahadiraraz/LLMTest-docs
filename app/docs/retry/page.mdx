@@ -9,13 +9,27 @@ Retry the **entire test** up to N times:
 ```python
 @llm_test(
     expect.contains("Paris"),
-    model="gpt-5-mini",
+    model="gpt-4o-mini",
     retries=3,
     retry_delay=0.5,
 )
 def test_capital_with_retry(llm):
-    output = llm("What is the capital of France?")
-    assert "Paris" in output.content
+    llm("What is the capital of France?")
+```
+
+## Statistical testing (runs)
+
+Run the test N times and pass if enough runs succeed:
+
+```python
+@llm_test(
+    expect.contains("Paris"),
+    model="gpt-4o-mini",
+    runs=10,
+    min_pass_rate=0.8,
+)
+def test_capital_reliable(llm):
+    llm("What is the capital of France?")
 ```
 
 ## Fixture-level retry
@@ -26,7 +40,7 @@ Retry **individual LLM calls** with a condition:
 def test_with_retry_condition(llm):
     output = llm(
         "Name a European capital",
-        model="gpt-5-mini",
+        model="gpt-4o-mini",
         retries=3,
         retry_if=lambda out: "Paris" not in out.content,
     )
@@ -40,4 +54,5 @@ def test_with_retry_condition(llm):
 | Level | Use when |
 |---|---|
 | Decorator `retries` | The whole test is flaky |
+| Decorator `runs` | You want statistical pass rate (e.g. 8/10) |
 | Fixture `retry_if` | A specific LLM call needs a particular output |
